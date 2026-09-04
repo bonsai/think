@@ -1,0 +1,58 @@
+version: 1
+namespace: bonsai.think
+
+Method:
+  description: Reusable, model-independent procedure for turning inputs into better decisions.
+  required:
+    - purpose
+    - inputs
+    - steps
+    - outputs
+  properties:
+    id: identifier
+    name: string
+    purpose: text
+    inputs: [Observation, Knowledge, Evidence, Goal, Context]
+    steps: [Step]
+    constraints: [Constraint]
+    alternatives: [Alternative]
+    outputs: [Decision, Hypothesis, Plan, Action]
+    evidence: [Evidence]
+    uncertainty: Uncertainty
+    feedback: Feedback
+    composes_with: [Method]
+
+Step:
+  properties:
+    id: identifier
+    action: string
+    input: [string]
+    output: [string]
+    requires_evidence: boolean
+
+MethodFamily:
+  members:
+    - observe
+    - frame
+    - decompose
+    - classify
+    - relate
+    - compare
+    - hypothesize
+    - reason
+    - validate
+    - diagnose
+    - prioritize
+    - forecast
+    - plan
+    - synthesize
+    - review
+    - reflect
+
+Relations:
+  composes_with: Method -> Method
+  requires: Method -> Capability
+  produces: Method -> Decision
+  supported_by: Method -> Evidence
+  improves_from: Method -> Feedback
+  selected_by: Method -> Agent
