@@ -1,0 +1,64 @@
+version: 1
+namespace: bonsai.think
+
+description: "Think defines interfaces for reusable decision methods; instances provide concrete implementations."
+
+interfaces:
+  Memory:
+    purpose: "Experience and observation storage."
+    inputs: [Observation, Prompt, Context, Action, Outcome, Evaluation]
+    outputs: [Experience]
+
+  Discovery:
+    purpose: "Discover patterns and estimate useful changes from experience."
+    inputs: [Experience, Context, Goal]
+    outputs: [Pattern, Hypothesis]
+
+  Preference:
+    purpose: "Represent observed preference and decision tendency without treating it as truth."
+    inputs: [Experience, Candidate, Context]
+    outputs: [Favor]
+
+  Proposition:
+    purpose: "Express a decision pattern as a proposition that can be verified."
+    inputs: [Favor, Evidence, Context]
+    outputs: [Proposition]
+
+  Decision:
+    purpose: "Select the next action from candidates under current constraints."
+    inputs: [Candidate, Proposition, Cost, Uncertainty, Context]
+    outputs: [Decision]
+
+  Evaluation:
+    purpose: "Evaluate outcomes and feed learning back into memory."
+    inputs: [Outcome, Goal, Context]
+    outputs: [Evaluation]
+
+instances:
+  SQLite:
+    implements: Memory
+  BQML:
+    implements: Discovery
+  Favor:
+    implements: Preference
+  Lean:
+    implements: Proposition
+  Jev:
+    implements: Decision
+
+relations:
+  implements: Instance -> Interface
+  composes_with: Interface -> Interface
+  records: Memory -> Experience
+  discovers: Discovery -> Pattern
+  preserves: Preference -> Favor
+  verifies: Proposition -> Proposition
+  selects: Decision -> Candidate
+  evaluates: Evaluation -> Outcome
+
+principles:
+  - "Interfaces define replaceable roles."
+  - "Instances provide concrete implementations."
+  - "Favor does not imply Truth."
+  - "Unproven does not imply False."
+  - "Unknown evidence is not the same as no evidence."
