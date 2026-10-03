@@ -1,0 +1,73 @@
+version: 1
+namespace: bonsai.think
+
+entities:
+  Goal:
+    description: "達成したい状態"
+  Observation:
+    description: "観測された事実"
+  Evidence:
+    description: "判断を支持する観測可能な根拠"
+  UnknownEvidence:
+    description: "存在する可能性があるが、まだ観測されていない根拠"
+  Knowledge:
+    description: "既知の知識"
+  Context:
+    description: "判断が行われる状況"
+  Prompt:
+    description: "判断を引き起こした入力"
+  Candidate:
+    description: "選択可能な案"
+  Decision:
+    description: "選択された判断"
+  Action:
+    description: "実行された行為"
+  Outcome:
+    description: "行為の結果"
+  Evaluation:
+    description: "結果に対する評価"
+  Favor:
+    description: "過去の判断から観測される選好・傾向"
+  Proposition:
+    description: "判断を命題として表現したもの"
+  Uncertainty:
+    description: "未知・未確定・信頼度"
+  Cost:
+    description: "判断または行動に必要なコスト"
+
+methods:
+  SQLite:
+    role: memory
+  ML:
+    role: discovery
+  Favor:
+    role: preference
+  Lean:
+    role: proposition
+  Jev:
+    role: decision
+
+states:
+  - observed
+  - inferred
+  - favored
+  - proposed
+  - proven
+  - unproven
+  - unknown
+  - executed
+  - evaluated
+
+relations:
+  observes: Observation -> Goal
+  supports: Evidence -> Proposition
+  may_support: UnknownEvidence -> Proposition
+  derives: ML -> Favor
+  expresses: Favor -> Proposition
+  verifies: Lean -> Proposition
+  selects: Jev -> Candidate
+  executes: Decision -> Action
+  produces: Action -> Outcome
+  evaluates: Evaluation -> Outcome
+  improves: Evaluation -> Method
+  remembers: SQLite -> Experience
