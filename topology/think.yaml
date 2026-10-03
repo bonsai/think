@@ -1,0 +1,53 @@
+version: 1
+namespace: bonsai.think
+
+nodes:
+  - sqlite
+  - ml
+  - favor
+  - lean
+  - jev
+  - action
+  - evaluation
+
+edges:
+  - from: sqlite
+    to: ml
+    relation: discovers_from
+  - from: ml
+    to: favor
+    relation: infers_preference
+  - from: favor
+    to: lean
+    relation: proposes_proposition
+  - from: lean
+    to: jev
+    relation: constrains_decision
+  - from: jev
+    to: action
+    relation: selects
+  - from: action
+    to: evaluation
+    relation: produces_result
+  - from: evaluation
+    to: sqlite
+    relation: remembers
+
+loop:
+  entry: sqlite
+  cycle:
+    - discover
+    - favor
+    - propose
+    - verify
+    - decide
+    - act
+    - evaluate
+    - remember
+
+principles:
+  - "Evidence and UnknownEvidence are distinct."
+  - "Favor does not imply Truth."
+  - "Unproven does not imply False."
+  - "Evaluation feeds future decisions."
+  - "The loop is more important than any individual model."
